@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise 🎂</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#ff758c,#ff7eb3);
+min-height:100vh;
+overflow-x:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.container{
+background:white;
+width:100%;
+max-width:800px;
+padding:30px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+position:relative;
+z-index:2;
+}
+
+.hidden{
+display:none;
+}
+
+input{
+width:80%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+button{
+padding:12px 25px;
+border:none;
+background:#ff4081;
+color:white;
+border-radius:10px;
+cursor:pointer;
+margin-top:20px;
+font-size:16px;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+img{
+width:250px;
+max-width:90%;
+border-radius:20px;
+margin:20px 0;
+box-shadow:0 5px 20px rgba(0,0,0,.2);
+}
+
+#message{
+margin-top:15px;
+font-weight:bold;
+color:red;
+}
+
+.balloon{
+position:fixed;
+bottom:-100px;
+font-size:40px;
+animation:floatUp 10s linear infinite;
+z-index:1;
+}
+
+@keyframes floatUp{
+0%{
+transform:translateY(0);
+}
+100%{
+transform:translateY(-120vh);
+}
+}
+
+.loading{
+font-size:24px;
+font-weight:bold;
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+50%{
+opacity:.4;
+}
+}
+
+.gift{
+font-size:100px;
+cursor:pointer;
+transition:.5s;
+}
+
+.gift:hover{
+transform:scale(1.1);
+}
+
+.typewriter{
+overflow:hidden;
+white-space:pre-wrap;
+font-size:18px;
+line-height:1.8;
+}
+
+.fade{
+animation:fadeIn 2s;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.fireworks{
+font-size:60px;
+animation:boom 1s infinite alternate;
+}
+
+@keyframes boom{
+from{
+transform:scale(1);
+}
+to{
+transform:scale(1.2);
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="balloon" style="left:10%">🎈</div>
+<div class="balloon" style="left:30%;animation-delay:2s">🎈</div>
+<div class="balloon" style="left:50%;animation-delay:4s">🎈</div>
+<div class="balloon" style="left:70%;animation-delay:6s">🎈</div>
+<div class="balloon" style="left:90%;animation-delay:8s">🎈</div>
+
+<div class="container">
+
+<div id="quiz">
+
+<h1>🎂 Friendship Test 🎂</h1>
+
+<br>
+
+<p><b>Question 1</b></p>
+<p>Who is your best friend? 😏</p>
+
+<input id="q1" placeholder="Type your answer">
+
+<br><br>
+
+<p><b>Question 2</b></p>
+<p>What is the first gift I gave to you? 🎁</p>
+<p><i>Clue: Starts with K and ends with n 😉</i></p>
+
+<input id="q2" placeholder="Type your answer">
+
+<br>
+
+<button onclick="checkAnswers()">Submit</button>
+
+<div id="message"></div>
+
+</div>
+
+<div id="loading" class="hidden">
+<h1>🎉 Access Granted 🎉</h1>
+<br>
+<p class="loading">Loading Birthday Surprise...</p>
+</div>
+
+<div id="giftSection" class="hidden">
+<h1>Your Gift Is Ready 🎁</h1>
+<br>
+<div class="gift" onclick="openGift()">🎁</div>
+<p>Click the gift box</p>
+</div>
+
+<div id="surprise" class="hidden fade">
+
+<h1 style="margin-bottom: 25px;">🎂 Happy Birthday Tharma 🎂</h1>
+
+<h2>🐱 A Special Birthday Wish From My Squad ❤️</h2>
+
+<img src="cat.jpeg" alt="Cat">
+
+<p>
+A little note from your irritate friend ❤️
+</p>
+
+<div id="note" class="typewriter"></div>
+
+<div id="friendPhoto" class="hidden fade">
+<img src="friends.jpeg" alt="Friends">
+
+<h2>❤️ Best Memories Together ❤️</h2>
+
+<p>
+What if we had been friends since childhood? Here's a little glimpse of that💫✨💚
+</p>
+
+<button type="button" onclick="showFinale()">
+    A small token for you🎆
+</button>
+
+</div>
+
+</div>
+
+<div id="finale" class="hidden">
+
+<div class="fireworks">
+🎆🎇🎆🎇🎆
+</div>
+
+
+<h1>Happy Birthday Tharma ❤️</h1>
+
+<br>
+
+<h2>
+May your year be filled with happiness, success, joy, good health and lots of laughter❤️💝🫂❤️.
+</h2>
+
+<br>
+
+<h3>
+Thank you for being an amazing friend 💖
+</h3>
+
+<button type="button" onclick="goBackToSurprise()">
+⬅ Back
+</button>
+
+
+</div>
+
+</div>
+
+<script>
+
+let attempts=0;
+
+function checkAnswers(){
+
+let a1=document.getElementById("q1").value.trim().toLowerCase();
+let a2=document.getElementById("q2").value.trim().toLowerCase();
+
+if(a1==="deepika" && a2==="keychain"){
+
+document.getElementById("quiz").classList.add("hidden");
+document.getElementById("loading").classList.remove("hidden");
+
+setTimeout(()=>{
+document.getElementById("loading").classList.add("hidden");
+document.getElementById("giftSection").classList.remove("hidden");
+},3000);
+
+}else{
+
+attempts++;
+
+if(attempts===1){
+document.getElementById("message").innerHTML=
+"🤨 Hmm... Are you sure? Think again!";
+}
+else if(attempts===2){
+document.getElementById("message").innerHTML=
+"😂 Friendship status is under review.. dei crt ans podu...";
+}
+else{
+document.getElementById("message").innerHTML=
+"🚨 dei ans unaku therium crt ah type pannu 😂";
+}
+}
+}
+function openGift(){
+
+document.getElementById("giftSection").classList.add("hidden");
+document.getElementById("surprise").classList.remove("hidden");
+
+typeWriter();
+}
+
+let text=`HAPPY BIRTHDAY MY DEAR BEST FRIEND💝🫂🎂
+
+Actually na clg life la enter ana apom unna mari oru good best friend kidaipanga apdilam nenachi kuda pakala 😅😂 adhe mari clg la  na yar kudayum unta friend ah irundha mari irundhadhu illa ..did u remember? Clg first year la enoda bday ku nee earrings vangi kudutha but later nee soli dhan therium adhu nee dhan adhula main contribute pananu..ig apove our frndship namake theriyama anga started pola.. actually  nama childhood la irundhu frnds ilanalum childhood frnds mari avalo memories share panirkom so nama childhood la irundhu frnds ah irundha epadi Irundhurkum nu our childhood pic vachi image generate panirken paru😅😜😁..rendu perume namaloda ups and downs pathurkom support ah vum irundhurkom 🫂..that makes our frndship even more stronger we shared so many things and sometimes unna nan irritate panirken😂😂 ..nariya sanda potruken un mela irundha rights la dhan apo apo small small fights potrupen ..some times nariya misunderstandings nadandhurkulam namakula adhula when I came to know nee hurt agirka apdi therinjadhum adhu nenachu nenachu na inum hurt anen .. epovachu unna hurt panirdha sorry seriya manichidu🫂 ..nama clg life um over ..nama frndship epome lifelong continue aganum..nee unoda life la inum nariya success and career growth ah pakanum na yepome support ah irupen .aprm nee enta sonadhu dhan nanu  ipo solren 😏😏..."see for me you are the only friend to me💙💚 and i am the only friend to u , ithu over jealous than😅 i know but my frd is only mine " ...enaku epome yen frnd oda happiness dhan mukiyam..u are such a talented person and u will achieve everything in your life. wishing you all the best for the wonderful journey ahead🫂🎂✨
+
+❤️ Irritate`;
+
+let i=0;
+
+function typeWriter(){
+
+if(i<text.length){
+
+document.getElementById("note").innerHTML += text.charAt(i);
+
+i++;
+
+setTimeout(typeWriter,10);
+
+}else{
+
+setTimeout(()=>{
+document.getElementById("friendPhoto")
+.classList.remove("hidden");
+},1000);
+
+}
+}
+
+function showFinale(){
+
+document.getElementById("surprise")
+.classList.add("hidden");
+
+document.getElementById("finale")
+.classList.remove("hidden");
+
+window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+});
+
+}
+function goBackToSurprise(){
+
+document.getElementById("finale")
+.classList.add("hidden");
+
+document.getElementById("surprise")
+.classList.remove("hidden");
+
+window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+});
+
+}
+
+</script>
+
+</body>
+</html>
